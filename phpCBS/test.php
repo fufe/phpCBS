@@ -5,8 +5,11 @@
  * 
  */
 
-require("config.php");
-require("includes/adLDAP/adLDAP.php");
+// define our application directory
+define('phpCBS_DIR', dirname(__FILE__));
+
+require phpCBS_DIR . '/config.php';
+require phpCBS_DIR . '/inc/adLDAP/adLDAP.php';
 
 header('Content-Type: text/html; charset=utf-8');
 

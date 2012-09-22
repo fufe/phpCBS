@@ -7,4 +7,4 @@
 
 session_start();
 
-require 'config.php';
+require phpCBS_DIR.'/config.php';

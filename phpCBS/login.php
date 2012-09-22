@@ -1,8 +1,11 @@
 <?php
 //TODO: User switching
 
-require 'inc/basics.php';
-require 'inc/adLDAP/adLDAP.php';
+// define our application directory
+define('phpCBS_DIR', dirname(__FILE__));
+
+require phpCBS_DIR . '/inc/basics.php';
+require phpCBS_DIR . '/inc/adLDAP/adLDAP.php';
 //
 //if ($_REQUEST['action']=="logoff") {
 //    unset($_SESSION['username']);
