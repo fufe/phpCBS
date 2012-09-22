@@ -1,8 +1,8 @@
 <?php
 //TODO: User switching
 
-require 'includes/basics.php';
-require 'includes/adLDAP/adLDAP.php';
+require 'inc/basics.php';
+require 'inc/adLDAP/adLDAP.php';
 //
 //if ($_REQUEST['action']=="logoff") {
 //    unset($_SESSION['username']);

@@ -5,7 +5,7 @@
  * 
  */
 
-require 'includes/basics.php';
+require 'inc/basics.php';
 if (!isset($_SESSION['username'])) {
     header('Location: login.php');
     exit();
