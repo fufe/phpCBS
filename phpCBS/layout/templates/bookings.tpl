@@ -8,7 +8,7 @@
 
 <body>
 
-     <p>Hello {$name}, welcome to Smarty!</p>
+     <p>Hello {$data}, welcome to Smarty!</p>
 
 </body>
 </html>

@@ -4,8 +4,10 @@
 // define our application directory
 define('phpCBS_DIR', dirname(__FILE__) . '/');
 
-require phpCBS_DIR . 'inc/basics.php';
 require phpCBS_DIR . 'inc/adLDAP/adLDAP.php';
+require phpCBS_DIR . 'config.php';
+
+session_start();
 
 if ($_SERVER['AUTH_USER']) {
     $userdetails = explode('\\', $_SERVER['AUTH_USER']);
