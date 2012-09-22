@@ -14,4 +14,3 @@ function dbInit(){
     $GLOBALS['db']=$db;
     return $db;
 }
-?>
