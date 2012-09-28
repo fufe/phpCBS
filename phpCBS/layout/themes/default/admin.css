@@ -1,0 +1,38 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 90%;
+    margin: 0;
+	padding: 20px;
+}
+
+/**
+ * Form data
+ */
+label {
+	color: navy;
+	float: left;
+    clear: left;
+	width: 15em;
+	text-align: right;
+}
+#data input, textarea {
+	margin-left: 1em;
+	margin-bottom: .5em;
+}
+#data input:focus {
+	border: 2px solid navy;
+}
+#lastname, #address { width: 20em; }
+#state { width: 2em; }
+#buttons {
+	padding-top: .5em;
+	margin-left: 20em;
+}
+#buttons input {
+	width: 6em;
+	color: navy;
+	background-color: silver;
+}
+/*fieldset {
+	border: 2px dashed black;
+}*/
