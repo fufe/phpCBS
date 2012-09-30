@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Edit Room Details</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="{$themepath}admin.css" />
     </head>
 
@@ -60,7 +61,3 @@
 
     </body>
 </html>
-
-[ShortName], [Name], [LocationFloor], [LocationWing], [SeatCount], [HasProjector], [BadProjector], 
-[HasLCDTV], [BadLCDTV], [HasPC], [BadPC], [HasPhone], [BadPhone], [PhoneType], [PhoneNumber], [HasWirelessKBM], [BadWirelessKBM], 
-[HasPowerBar], [BadPowerBar], [HasAmplifier], [BadAmplifier], [ProjectorType], [ProjectorLampTime], [AmplifierType], [Speakers], [ScreenSize], [Misc]
