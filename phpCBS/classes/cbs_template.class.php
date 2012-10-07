@@ -9,7 +9,7 @@
 //require_once phpCBS_DIR . 'inc/smarty/Smarty.class.php';
 //require_once phpCBS_DIR . 'inc/libcbs.php';
 
-class cbs_Smarty extends Smarty {
+class cbs_template extends Smarty {
 
     function __construct()
     {

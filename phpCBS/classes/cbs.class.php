@@ -31,7 +31,7 @@ class cbs {
         $this->db = new db_sqlsrv($config);
         $this->themepath = 'layout/themes/default/';
         // instantiate the template object
-        $this->tpl = new cbs_Smarty;
+        $this->tpl = new cbs_template();
         $this->tpl->assign('themepath', $this->themepath);
     }
 
@@ -56,7 +56,7 @@ class cbs {
      */
     function displayBookings($data = array()) {
 
-        $this->tpl->assign('data', $data);
+        $this->tpl->assign('data', 'FuFe');
         $this->tpl->display('bookings.tpl');
     }
 
