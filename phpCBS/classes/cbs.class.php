@@ -11,10 +11,10 @@
  * phpCBS application library
  *
  */
-class CBS {
+class cbs {
 
     // database object
-    var $pdo = null;
+    var $db = null;
     // smarty template object
     var $tpl = null;
     // error messages
@@ -27,17 +27,11 @@ class CBS {
      */
     function __construct($config = array()) {
 
-        // instantiate the pdo object
-        try {
-            $dsn = "{$config['db_engine']}:server={$config['db_server']};database={$config['db_database']}";
-            $this->pdo = new PDO($dsn, $config['db_username'], $config['db_password']);
-        } catch (PDOException $e) {
-            print "Error!: " . $e->getMessage();
-            die();
-        }
+        // instantiate the database object
+        $this->db = new db_sqlsrv($config);
         $this->themepath = 'layout/themes/default/';
         // instantiate the template object
-        $this->tpl = new CBS_Smarty;
+        $this->tpl = new cbs_Smarty;
         $this->tpl->assign('themepath', $this->themepath);
     }
 

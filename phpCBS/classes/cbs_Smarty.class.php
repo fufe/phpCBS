@@ -5,11 +5,11 @@
  * 
  */
 
-require_once phpCBS_DIR . 'config.php';
-require_once phpCBS_DIR . 'inc/smarty/Smarty.class.php';
-require_once phpCBS_DIR . 'inc/libcbs.php';
+//require_once phpCBS_DIR . 'config.php';
+//require_once phpCBS_DIR . 'inc/smarty/Smarty.class.php';
+//require_once phpCBS_DIR . 'inc/libcbs.php';
 
-class CBS_Smarty extends Smarty {
+class cbs_Smarty extends Smarty {
 
     function __construct()
     {
@@ -21,8 +21,6 @@ class CBS_Smarty extends Smarty {
         $this->setCacheDir(phpCBS_DIR . 'var/cache/');
 
         $this->caching = Smarty::CACHING_LIFETIME_CURRENT;
-        $this->assign('app_name', 'Company Booking System');
+        $this->assign('app_name', 'phpCBS');
     }
 }
-
-date_default_timezone_set('Europe/Budapest');
