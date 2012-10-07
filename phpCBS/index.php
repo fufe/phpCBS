@@ -5,20 +5,15 @@
  * 
  */
 
-// Starting the session
-session_start();
-
-// Checking if user already logged in
-//if (!isset($_SESSION['username'])) {
-//    header('Location: login.php');
-//    exit();
-//}
-//
 // Define our application directory
 define('phpCBS_DIR', dirname(__FILE__) . '/');
 // Define SMARTY_DIR
 define('SMARTY_DIR', phpCBS_DIR . 'classes/Smarty/');
 
+// Loading configuration
+require phpCBS_DIR . 'config.php';
+
+// Class autoloader function
 function cbs_autoloader($class) {
     if ($class == "Smarty") {
         include 'classes/Smarty/Smarty.class.php';
@@ -31,8 +26,18 @@ function cbs_autoloader($class) {
 
 spl_autoload_register('cbs_autoloader');
 
-require phpCBS_DIR . 'config.php';
+// Starting the session
+session_start();
 
+// Checking if user already logged in
+if (!isset($_SESSION['username'])) {
+    $loginh = new login($LDAP_CONFIG);
+     if ($loginh->authFrom_IIS_AUTHUSER($_SERVER['AUTH_USER'])) {
+         $_SESSION = array_merge($_SESSION, $loginh->getDetails());
+     } else die('Unknown user');    
+}
+
+// Instanciating main class.
 $cbs = new cbs($DB_CONFIG);
 
 // set the current action
@@ -62,6 +67,6 @@ switch ($_action) {
     case 'view':
     default:
 // viewing the guestbook
-        $cbs->displayBookings('');
+        $cbs->displayBookings($_SESSION['displayname']);
         break;
 }

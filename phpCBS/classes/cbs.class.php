@@ -54,9 +54,9 @@ class cbs {
      *
      * @param array $data the booking data
      */
-    function displayBookings($data = array()) {
+    function displayBookings($data) {
 
-        $this->tpl->assign('data', 'FuFe');
+        $this->tpl->assign('data', $data);
         $this->tpl->display('bookings.tpl');
     }
 
