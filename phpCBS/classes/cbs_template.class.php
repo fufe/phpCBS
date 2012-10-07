@@ -20,7 +20,8 @@ class cbs_template extends Smarty {
         $this->setConfigDir(phpCBS_DIR . 'var/configs/');
         $this->setCacheDir(phpCBS_DIR . 'var/cache/');
 
-        $this->caching = Smarty::CACHING_LIFETIME_CURRENT;
+        // Caching disabled for development
+        // $this->caching = Smarty::CACHING_LIFETIME_CURRENT;
         $this->assign('app_name', 'phpCBS');
     }
 }
