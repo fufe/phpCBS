@@ -65,6 +65,12 @@ class cbs {
         $this->tpl->display('editroom.tpl');
     }
 
+    function showITScheduleEventsList(){
+        $list = $this->db->getITScheduleEventsList();
+        $this->tpl->assign('list', $list);        
+        $this->tpl->display('itschedule_listevents.tpl');
+    }
+    
     function editITScheduleEvent($id) {
         $data = $this->db->getITScheduleEventDetailsById($id);
         $data["formaction"] = "Update Event";

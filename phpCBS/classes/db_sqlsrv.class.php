@@ -25,6 +25,14 @@ class db_sqlsrv {
         }
     }
     
+    function getITScheduleEventsList(){
+        $sth = $this->dbh->query("SELECT * FROM itschedule_events");
+        while ($row = $sth->fetch (PDO::FETCH_ASSOC)){
+            $list[] = $row;
+        }
+        return $list;
+    }
+    
     function getITScheduleEventDetailsById($id){
         $sth = $this->dbh->query("SELECT * FROM itschedule_events WHERE id=$id");
         $data = $sth->fetch (PDO::FETCH_ASSOC);

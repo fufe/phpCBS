@@ -67,7 +67,7 @@ switch ($_action) {
     
     case 'itschedule_listevents':
 // adding a guestbook entry
-        $cbs->ni('itschedule_listevents');
+        $cbs->showITScheduleEventsList();
         break;
     case 'itschedule_addevent':
 // adding a guestbook entry
