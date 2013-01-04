@@ -64,6 +64,24 @@ switch ($_action) {
 // adding a guestbook entry
         $cbs->ni('room_submit');
         break;
+    
+    case 'itschedule_listevents':
+// adding a guestbook entry
+        $cbs->ni('itschedule_listevents');
+        break;
+    case 'itschedule_addevent':
+// adding a guestbook entry
+        $cbs->addITScheduleEvent($_REQUEST);
+        break;
+    case 'itschedule_editevent':
+// adding a guestbook entry
+        $cbs->editITScheduleEvent($_REQUEST["id"]);
+        break;
+    case 'itschedule_editevent_submit':
+// adding a guestbook entry
+        $cbs->processITScheduleEventForm($_REQUEST);
+        break;
+    
     case 'view':
     default:
 // viewing the guestbook

@@ -3,7 +3,7 @@
 /**
  * Project: phpCBS
  * Author: FuFe
- * File: libcbs.php
+ * File: cbs.class.php
  * Version: 1.0
  */
 
@@ -65,8 +65,34 @@ class cbs {
         $this->tpl->display('editroom.tpl');
     }
 
+    function editITScheduleEvent($id) {
+        $data = $this->db->getITScheduleEventDetailsById($id);
+        $data["formaction"] = "Update Event";
+        $this->showITScheduleEventForm($data);
+    }
+
+    function addITScheduleEvent($data = array()) {
+        $data["id"] = "new";
+        $data["formaction"] = "Add Event";
+        $this->showITScheduleEventForm($data);
+    }
+
+    function showITScheduleEventForm($data = array()) {
+        $this->tpl->assign('data', $data);        
+        $this->tpl->display('itschedule_editevent.tpl');
+    }
+    
+    function processITScheduleEventForm($submitted){
+        if ($submitted["id"]=="new") {
+            $result = $this->db->addITScheduleEvent($submitted);
+        } else {
+            $result = $this->db->updateITScheduleEvent($submitted);
+        }
+        if ($result) echo "Success!"; else echo "Error!";
+    }
+
     function ni($func) {
-        echo('Function ' . $func . ' not yet implemented');
+        echo('Function ' . $func . ' is not yet implemented');
     }
 
 }

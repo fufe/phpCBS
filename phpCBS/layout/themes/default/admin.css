@@ -26,10 +26,10 @@ label {
 #state { width: 2em; }
 #buttons {
 	padding-top: .5em;
-	margin-left: 20em;
+	margin-left: 16em;
 }
 #buttons input {
-	width: 6em;
+	width: 12em;
 	color: navy;
 	background-color: silver;
 }
