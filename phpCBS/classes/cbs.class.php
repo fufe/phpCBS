@@ -35,35 +35,35 @@ class cbs {
         $this->tpl->assign('themepath', $this->themepath);
     }
 
-    /**
-     * display the booking entry form
-     *
-     * @param array $formvars the form variables
-     */
-    function displayBookingForm($formvars = array()) {
-
-        // assign the form vars
-        $this->tpl->assign('post', $formvars);
-        // assign error message
-        $this->tpl->assign('error', $this->error);
-        $this->tpl->display('booking_form.tpl');
-    }
-
-    /**
-     * display the bookings
-     *
-     * @param array $data the booking data
-     */
-    function displayBookings($data) {
-
-        $this->tpl->assign('data', $data);
-        $this->tpl->display('bookings.tpl');
-    }
-
-    function displayRoom($data = array()) {
-        $this->tpl->assign('data', $data);
-        $this->tpl->display('editroom.tpl');
-    }
+//    /**
+//     * display the booking entry form
+//     *
+//     * @param array $formvars the form variables
+//     */
+//    function displayBookingForm($formvars = array()) {
+//
+//        // assign the form vars
+//        $this->tpl->assign('post', $formvars);
+//        // assign error message
+//        $this->tpl->assign('error', $this->error);
+//        $this->tpl->display('booking_form.tpl');
+//    }
+//
+//    /**
+//     * display the bookings
+//     *
+//     * @param array $data the booking data
+//     */
+//    function displayBookings($data) {
+//
+//        $this->tpl->assign('data', $data);
+//        $this->tpl->display('bookings.tpl');
+//    }
+//
+//    function displayRoom($data = array()) {
+//        $this->tpl->assign('data', $data);
+//        $this->tpl->display('editroom.tpl');
+//    }
 
     function showITScheduleEventsList($isadmin){
         $list = $this->db->getITScheduleEventsList();
@@ -95,9 +95,38 @@ class cbs {
         } else {
             $result = $this->db->updateITScheduleEvent($submitted);
         }
-        if ($result) echo "Success!"; else echo "Error!";
+        if ($result) echo "<br>Success adding event!"; else echo "<br>Error adding event!";
+        $result = $this->db->addITScheduleEventDates(1, $this->addITScheduleEventDates($submitted));
+        if ($result) echo "<br>Success adding event dates!"; else echo "<br>Error adding event dates!";
     }
 
+    function addITScheduleEventDates($submitted){
+        $startDate = $submitted["datestart"]; 
+        $endDate = $submitted["dateend"];
+        $data = array(); 
+
+        for($current = $startDate; $current != $endDate; $current = date('Y-m-d', strtotime("$current +1 day"))) {
+            $day["date"] = $current;
+            $day["dayofweek"] = date("l", strtotime($current));
+            $day["isenabled"] = (date("N", strtotime($current)) <= 5) ? 1 : (($submitted["isweekends"]) ? 1 : 0);
+            $day["maxlaptops"] = $submitted["maxlaptopperday"];
+            $day["maxdesktops"] = $submitted["maxdesktopperday"];
+            $data[] = $day;
+        }
+        return $data;
+    }
+    
+    function showITScheduleEventDatesForm($submitted){
+        
+        
+        
+        return false;
+    }
+    
+    function processITScheduleEventDatesForm(){
+        return false;
+    }
+    
     function ni($func) {
         echo('Function ' . $func . ' is not yet implemented');
     }

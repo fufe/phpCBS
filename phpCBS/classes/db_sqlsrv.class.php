@@ -76,4 +76,19 @@ class db_sqlsrv {
         $sth = $this->dbh->query("SELECT * FROM itschedule_users WHERE account='$username'");
         return $sth->fetch (PDO::FETCH_ASSOC);      
     }
+    
+    function addITScheduleEventDates($eventid, $dates = array()){
+        $result = true;
+        $sth = $this->dbh->prepare("INSERT INTO itschedule_event_dates (eventid,eventdate,isenabled,maxlaptops,maxdesktops) 
+            VALUES (:eventid,:eventdate,:isenabled,:maxlaptops,:maxdesktops)");
+        $sth->bindParam(":eventid", $eventid);
+        foreach ($dates as $day) {
+            $sth->bindParam(":eventdate", $day["eventdate"]);
+            $sth->bindParam(":isenabled", $day["isenabled"]);
+            $sth->bindParam(":maxlaptops", $day["maxlaptops"]);
+            $sth->bindParam(":maxdesktops", $day["maxdesktops"]);
+            if (!$sth->execute()) $result = FALSE;
+        }
+        return $result;
+    }
 }

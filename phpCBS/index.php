@@ -44,26 +44,26 @@ $cbs = new cbs($DB_CONFIG);
 $_action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'view';
 
 switch ($_action) {
-    case 'book':
-// adding a guestbook entry
-        $cbs->ni('book');
-        break;
-    case 'listrooms':
-// adding a guestbook entry
-        $cbs->ni('listrooms');
-        break;
-    case 'addroom':
-// adding a guestbook entry
-        $cbs->ni('addroom');
-        break;
-    case 'editroom':
-// adding a guestbook entry
-        $cbs->displayRoom(array('id' => '12'));
-        break;
-    case 'room_submit':
-// adding a guestbook entry
-        $cbs->ni('room_submit');
-        break;
+//    case 'book':
+//// adding a guestbook entry
+//        $cbs->ni('book');
+//        break;
+//    case 'listrooms':
+//// adding a guestbook entry
+//        $cbs->ni('listrooms');
+//        break;
+//    case 'addroom':
+//// adding a guestbook entry
+//        $cbs->ni('addroom');
+//        break;
+//    case 'editroom':
+//// adding a guestbook entry
+//        $cbs->displayRoom(array('id' => '12'));
+//        break;
+//    case 'room_submit':
+//// adding a guestbook entry
+//        $cbs->ni('room_submit');
+//        break;
     
     case 'itschedule_listevents':
 // adding a guestbook entry
@@ -87,7 +87,23 @@ switch ($_action) {
             $cbs->processITScheduleEventForm($_REQUEST);
         } else die("Unauthorised");        
         break;
-    
+    case 'itschedule_editeventdates':
+        if ($_SESSION["isitscheduleadmin"]){
+            $cbs->ni('itschedule_editeventdates');
+        } else die("Unauthorised");  
+        break;       
+    case 'itschedule_editeventdates_submit':
+        if ($_SESSION["isitscheduleadmin"]){
+            $cbs->ni('itschedule_editeventdates_submit');
+        } else die("Unauthorised");  
+        break;    
+    case 'itschedule_showeventdates':
+        $cbs->ni('itschedule_showeventdates');
+        break;    
+    case 'itschedule_apply':
+        $cbs->ni('itschedule_apply');
+        break;
+
     case 'view':
     default:
 // viewing the guestbook
