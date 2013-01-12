@@ -31,7 +31,7 @@ session_start();
 
 // Checking if user already logged in
 if (!isset($_SESSION['username'])) {
-    $loginh = new login($LDAP_CONFIG);
+    $loginh = new login($LDAP_CONFIG, $DB_CONFIG);
      if ($loginh->authFrom_IIS_AUTHUSER($_SERVER['AUTH_USER'])) {
          $_SESSION = array_merge($_SESSION, $loginh->getDetails());
      } else die('Unknown user');    
@@ -71,20 +71,26 @@ switch ($_action) {
         break;
     case 'itschedule_addevent':
 // adding a guestbook entry
-        $cbs->addITScheduleEvent($_REQUEST);
+        if ($_SESSION["isitscheduleadmin"]){
+            $cbs->addITScheduleEvent($_REQUEST);
+        } else die("Unauthorised");        
         break;
     case 'itschedule_editevent':
 // adding a guestbook entry
-        $cbs->editITScheduleEvent($_REQUEST["id"]);
+        if ($_SESSION["isitscheduleadmin"]){
+            $cbs->editITScheduleEvent($_REQUEST["id"]);
+        } else die("Unauthorised");        
         break;
     case 'itschedule_editevent_submit':
 // adding a guestbook entry
-        $cbs->processITScheduleEventForm($_REQUEST);
+        if ($_SESSION["isitscheduleadmin"]){
+            $cbs->processITScheduleEventForm($_REQUEST);
+        } else die("Unauthorised");        
         break;
     
     case 'view':
     default:
 // viewing the guestbook
-        $cbs->displayBookings($_SESSION['displayname']);
+        $cbs->showITScheduleEventsList();
         break;
 }

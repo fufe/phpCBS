@@ -11,14 +11,23 @@ class login {
     var $displayname = null;
     var $domain = null;
     var $userdetails = array();
+    var $dbconfig = array();
+    var $dbh = null;
 
-    public function __construct($config = array()) {
+    public function __construct($config = array(), $dbconfig = array()) {
         $this->ldap_config = $config;
         try {
             $this->ldaph = new adLDAP($this->ldap_config);
         } catch (adLDAPException $e) {
             die($e);
         }
+
+        $this->dbconfig = $dbconfig;
+        try {
+            $this->dbh = new db_sqlsrv($this->dbconfig);
+        } catch (Exception $e) {
+            die($e);
+        }      
     }
 
     function authFrom_IIS_AUTHUSER($auth_user) {
@@ -30,6 +39,7 @@ class login {
                     $this->userdetails['username'] = $details[1];
                     $this->userdetails['domain'] = $details[0];
                     $this->userdetails['displayname'] = $userinfo->displayname;
+                    $this->userdetails['isitscheduleadmin'] = $this->checkIfUserIsAdmin($details[1]);
                 }
             }
             return TRUE;
@@ -42,4 +52,9 @@ class login {
         return $this->userdetails;
     }
 
+    function checkIfUserIsAdmin($username){
+        if ($userdetails = $this->dbh->getITScheduleUserDetails($username)){
+            return (bool)$userdetails["isitscheduleadmin"];
+        } else return FALSE;
+    }
 }

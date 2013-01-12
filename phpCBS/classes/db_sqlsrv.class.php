@@ -72,4 +72,8 @@ class db_sqlsrv {
         return $sth->execute();
     }
     
+    function getITScheduleUserDetails($username){
+        $sth = $this->dbh->query("SELECT * FROM itschedule_users WHERE account='$username'");
+        return $sth->fetch (PDO::FETCH_ASSOC);      
+    }
 }
