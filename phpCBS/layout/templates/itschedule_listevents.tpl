@@ -11,12 +11,16 @@
         <h1>Available Events:</h1>            
         <ul>
         {foreach from=$list item=i}
-            <li><a href="index.php?action=itschedule_apply&id={$i.id}">{$i.name}</a> ----- <a href="index.php?action=itschedule_editevent&id={$i.id}">Edit</a></li>
+            {if $i.isenabled or $admin}
+            <li><a href="index.php?action=itschedule_apply&id={$i.id}">{$i.name}</a>{if $admin} ----- <a href="index.php?action=itschedule_editevent&id={$i.id}">Edit</a>{/if}</li>
             <ul>
                 <li>{$i.description}</li>
             </ul>
+            {/if}
         {/foreach}
+        {if $admin}
         <li><a href="index.php?action=itschedule_addevent">Add new event</a></li>
+        {/if}
         </ul>
     </body>
 </html>

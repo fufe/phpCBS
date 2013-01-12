@@ -65,9 +65,10 @@ class cbs {
         $this->tpl->display('editroom.tpl');
     }
 
-    function showITScheduleEventsList(){
+    function showITScheduleEventsList($isadmin){
         $list = $this->db->getITScheduleEventsList();
-        $this->tpl->assign('list', $list);        
+        $this->tpl->assign('list', $list);
+        $this->tpl->assign('admin', $isadmin);
         $this->tpl->display('itschedule_listevents.tpl');
     }
     

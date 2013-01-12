@@ -67,7 +67,7 @@ switch ($_action) {
     
     case 'itschedule_listevents':
 // adding a guestbook entry
-        $cbs->showITScheduleEventsList();
+        $cbs->showITScheduleEventsList($_SESSION["isitscheduleadmin"]);
         break;
     case 'itschedule_addevent':
 // adding a guestbook entry
@@ -91,6 +91,6 @@ switch ($_action) {
     case 'view':
     default:
 // viewing the guestbook
-        $cbs->showITScheduleEventsList();
+        $cbs->showITScheduleEventsList($_SESSION["isitscheduleadmin"]);
         break;
 }
