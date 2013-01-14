@@ -66,35 +66,31 @@ switch ($_action) {
 //        break;
     
     case 'itschedule_listevents':
-// adding a guestbook entry
         $cbs->showITScheduleEventsList($_SESSION["isitscheduleadmin"]);
         break;
     case 'itschedule_addevent':
-// adding a guestbook entry
         if ($_SESSION["isitscheduleadmin"]){
             $cbs->addITScheduleEvent($_REQUEST);
         } else die("Unauthorised");        
         break;
     case 'itschedule_editevent':
-// adding a guestbook entry
         if ($_SESSION["isitscheduleadmin"]){
             $cbs->editITScheduleEvent($_REQUEST["id"]);
         } else die("Unauthorised");        
         break;
     case 'itschedule_editevent_submit':
-// adding a guestbook entry
         if ($_SESSION["isitscheduleadmin"]){
             $cbs->processITScheduleEventForm($_REQUEST);
         } else die("Unauthorised");        
         break;
     case 'itschedule_editeventdates':
         if ($_SESSION["isitscheduleadmin"]){
-            $cbs->ni('itschedule_editeventdates');
+            $cbs->showITScheduleEventDatesForm($_REQUEST);
         } else die("Unauthorised");  
         break;       
     case 'itschedule_editeventdates_submit':
         if ($_SESSION["isitscheduleadmin"]){
-            $cbs->ni('itschedule_editeventdates_submit');
+            $cbs->processITScheduleEventDatesForm($_REQUEST);
         } else die("Unauthorised");  
         break;    
     case 'itschedule_showeventdates':

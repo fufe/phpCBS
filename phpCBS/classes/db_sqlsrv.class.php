@@ -51,7 +51,11 @@ class db_sqlsrv {
         $sth->bindParam(":maxdesktopperday", $data["maxdesktopperday"]);
         $sth->bindParam(":maxlaptopperday", $data["maxlaptopperday"]);
         $sth->bindParam(":isenabled", $data["isenabled"]);
-        return $sth->execute();
+        $result = $sth->execute();
+        if ($result) {
+            return $this->dbh->lastInsertId ();
+        }
+        else return FALSE;
     }
 
     function updateITScheduleEvent($data){
@@ -83,10 +87,31 @@ class db_sqlsrv {
             VALUES (:eventid,:eventdate,:isenabled,:maxlaptops,:maxdesktops)");
         $sth->bindParam(":eventid", $eventid);
         foreach ($dates as $day) {
-            $sth->bindParam(":eventdate", $day["eventdate"]);
+            $sth->bindParam(":eventdate", $day["date"]);
             $sth->bindParam(":isenabled", $day["isenabled"]);
             $sth->bindParam(":maxlaptops", $day["maxlaptops"]);
             $sth->bindParam(":maxdesktops", $day["maxdesktops"]);
+            if (!$sth->execute()) $result = FALSE;
+        }
+        return $result;
+    }
+    
+    function getITScheduleEventDateListByID($eventid){
+        $sth = $this->dbh->query("SELECT id,eventdate,isenabled,maxlaptops,maxdesktops FROM itschedule_event_dates WHERE eventid=$eventid");
+        while ($row = $sth->fetch (PDO::FETCH_ASSOC)){
+            $data[] = $row;
+        }
+        return $data;        
+    }
+    
+    function updateITScheduleEventDates($data = array()){
+        $result = TRUE;
+        $sth = $this->dbh->prepare("UPDATE itschedule_event_dates SET isenabled=:isenabled,maxlaptops=:maxlaptops,maxdesktops=:maxdesktops WHERE id=:id");
+        foreach ($data as $item) {
+            $sth->bindParam(":id", $item["id"]);
+            $sth->bindParam(":isenabled", $item["isenabled"]);
+            $sth->bindParam(":maxlaptops", $item["maxlaptops"]);
+            $sth->bindParam(":maxdesktops", $item["maxdesktops"]);
             if (!$sth->execute()) $result = FALSE;
         }
         return $result;

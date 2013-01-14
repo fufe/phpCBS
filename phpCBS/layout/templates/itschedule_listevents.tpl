@@ -12,7 +12,7 @@
         <ul>
         {foreach from=$list item=i}
             {if $i.isenabled or $admin}
-            <li><a href="index.php?action=itschedule_apply&id={$i.id}">{$i.name}</a>{if $admin} ----- <a href="index.php?action=itschedule_editevent&id={$i.id}">Edit</a>{/if}</li>
+            <li><a href="index.php?action=itschedule_apply&id={$i.id}">{$i.name}</a>{if $admin} ----- <a href="index.php?action=itschedule_editevent&id={$i.id}">Edit Event</a> ----- <a href="index.php?action=itschedule_editeventdates&id={$i.id}">Edit Date List</a>{/if}</li>
             <ul>
                 <li>{$i.description}</li>
             </ul>

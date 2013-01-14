@@ -92,11 +92,12 @@ class cbs {
     function processITScheduleEventForm($submitted){
         if ($submitted["id"]=="new") {
             $result = $this->db->addITScheduleEvent($submitted);
+            $submitted["id"] = $result;
         } else {
             $result = $this->db->updateITScheduleEvent($submitted);
         }
         if ($result) echo "<br>Success adding event!"; else echo "<br>Error adding event!";
-        $result = $this->db->addITScheduleEventDates(1, $this->addITScheduleEventDates($submitted));
+        $result = $this->db->addITScheduleEventDates($submitted["id"], $this->addITScheduleEventDates($submitted));
         if ($result) echo "<br>Success adding event dates!"; else echo "<br>Error adding event dates!";
     }
 
@@ -117,14 +118,26 @@ class cbs {
     }
     
     function showITScheduleEventDatesForm($submitted){
-        
-        
-        
-        return false;
+        $list = $this->db->getITScheduleEventDateListByID($submitted["id"]);
+        $this->tpl->assign('list', $list);
+        $this->tpl->display('itschedule_editdatelist.tpl');
     }
     
-    function processITScheduleEventDatesForm(){
-        return false;
+    function processITScheduleEventDatesForm($formdata = array()){
+        foreach ($formdata["maxlaptops"] as $key => $value) {
+            $ids[] = $key;
+        }
+        foreach ($ids as $id) {
+            $row["id"] = $id;
+            if (array_key_exists($id, $formdata["isenabled"])) {
+                $row["isenabled"] = "1";
+            } else $row["isenabled"] = "0";
+            $row["maxlaptops"] = $formdata["maxlaptops"]["$id"];
+            $row["maxdesktops"] = $formdata["maxdesktops"]["$id"];
+            $data[] = $row;
+        }
+        $result = $this->db->updateITScheduleEventDates($data);
+        if ($result) echo "<br>Success updating event dates!"; else echo "<br>Error updating event dates!";
     }
     
     function ni($func) {
