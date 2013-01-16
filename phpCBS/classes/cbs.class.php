@@ -150,7 +150,7 @@ class cbs {
             $laptops = $this->db->getITScheduleEventDateBookingsByID($day["id"], "laptop");
             $desktops = $this->db->getITScheduleEventDateBookingsByID($day["id"], "desktop");
             $data["islaptopbookable"] = ( $day["maxlaptops"] - (count($laptops)) > 0 ) ? TRUE:FALSE;
-            $data["isdesktopbookable"] = ( $day["maxdesktops"]) - (count($laptops) > 0 ) ? TRUE:FALSE;
+            $data["isdesktopbookable"] = ( $day["maxdesktops"] - (count($desktops)) > 0 ) ? TRUE:FALSE;
             $list[] = $data;
         }
         $this->tpl->assign('list', $list);
