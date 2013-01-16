@@ -27,13 +27,13 @@ class login {
             $this->dbh = new db_sqlsrv($this->dbconfig);
         } catch (Exception $e) {
             die($e);
-        }      
+        }
     }
 
     function authFrom_IIS_AUTHUSER($auth_user) {
         if ($auth_user != '') {
             $details = explode('\\', $auth_user);
-            if ($details[0] == $this->ldap_config['domain']) {
+            if (strtoupper($details[0]) == strtoupper($this->ldap_config['domain'])) {
                 $userinfo = $this->ldaph->user()->infoCollection($details[1], array("*"));
                 if ($userinfo) {
                     $this->userdetails['username'] = $details[1];
@@ -41,6 +41,9 @@ class login {
                     $this->userdetails['displayname'] = $userinfo->displayname;
                     $this->userdetails['isitscheduleadmin'] = $this->checkIfUserIsAdmin($details[1]);
                 }
+            } else {
+                $this->userdetails = null;
+                return FALSE;
             }
             return TRUE;
         } else
@@ -52,9 +55,11 @@ class login {
         return $this->userdetails;
     }
 
-    function checkIfUserIsAdmin($username){
-        if ($userdetails = $this->dbh->getITScheduleUserDetails($username)){
-            return (bool)$userdetails["isitscheduleadmin"];
-        } else return FALSE;
+    function checkIfUserIsAdmin($username) {
+        if ($userdetails = $this->dbh->getITScheduleUserDetails($username)) {
+            return (bool) $userdetails["isitscheduleadmin"];
+        } else
+            return FALSE;
     }
+
 }

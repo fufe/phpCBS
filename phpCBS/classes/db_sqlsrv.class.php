@@ -121,11 +121,8 @@ class db_sqlsrv {
     }
 
     function getITScheduleEventDateByID($eventdateid) {
-//        $sth = $this->dbh->query("SELECT id,eventdate,isenabled,maxlaptops,maxdesktops FROM itschedule_event_dates WHERE eventid=$eventid");
-//        while ($row = $sth->fetch (PDO::FETCH_ASSOC)){
-//            $data[] = $row;
-//        }
-//        return $data;        
+        $sth = $this->dbh->query("SELECT * FROM itschedule_event_dates WHERE id=$eventdateid");
+        return $sth->fetch (PDO::FETCH_ASSOC);        
     }
 
     function getITScheduleEventDateBookingsByID($eventdateid, $devicetype) {
@@ -150,5 +147,23 @@ class db_sqlsrv {
         $sth->bindParam(":location", $data["location"]);
         return $sth->execute();
     }
-
+    
+    function getITScheduleApplicationsByUsername($username = array()) {
+        $sth = $this->dbh->query("SELECT * FROM itschedule_applications WHERE username='$username'");
+        $data = array();
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $row;
+        }
+        return $data;        
+    }
+    
+    function getITScheduleApplicationsById($id) {
+        $sth = $this->dbh->query("SELECT * FROM itschedule_applications WHERE id=$id");
+        return $sth->fetch(PDO::FETCH_ASSOC);        
+    }
+    
+    function deleteITScheduleApplicationById($id) {
+        $sth = $this->dbh->prepare("DELETE FROM itschedule_applications WHERE id = $id");
+        return $sth->execute();        
+    }
 }

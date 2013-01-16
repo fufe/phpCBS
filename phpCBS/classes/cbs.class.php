@@ -65,13 +65,13 @@ class cbs {
 //        $this->tpl->display('editroom.tpl');
 //    }
 
-    function showITScheduleEventsList($isadmin){
+    function showITScheduleEventsList($isadmin) {
         $list = $this->db->getITScheduleEventsList();
         $this->tpl->assign('list', $list);
         $this->tpl->assign('admin', $isadmin);
         $this->tpl->display('itschedule_listevents.tpl');
     }
-    
+
     function editITScheduleEvent($id) {
         $data = $this->db->getITScheduleEventDetailsById($id);
         $data["formaction"] = "Update Event";
@@ -85,28 +85,32 @@ class cbs {
     }
 
     function showITScheduleEventForm($data = array()) {
-        $this->tpl->assign('data', $data);        
+        $this->tpl->assign('data', $data);
         $this->tpl->display('itschedule_editevent.tpl');
     }
-    
-    function processITScheduleEventForm($submitted){
-        if ($submitted["id"]=="new") {
+
+    function processITScheduleEventForm($submitted) {
+        if ($submitted["id"] == "new") {
             $result = $this->db->addITScheduleEvent($submitted);
             $submitted["id"] = $result;
         } else {
             $result = $this->db->updateITScheduleEvent($submitted);
         }
-        if ($result) echo "<br>Success adding event!"; else echo "<br>Error adding event!";
+        if ($result)
+            echo "<br>Success adding event!"; else
+            echo "<br>Error adding event!";
         $result = $this->db->addITScheduleEventDates($submitted["id"], $this->addITScheduleEventDates($submitted));
-        if ($result) echo "<br>Success adding event dates!"; else echo "<br>Error adding event dates!";
+        if ($result)
+            echo "<br>Success adding event dates!"; else
+            echo "<br>Error adding event dates!";
     }
 
-    function addITScheduleEventDates($submitted){
-        $startDate = $submitted["datestart"]; 
+    function addITScheduleEventDates($submitted) {
+        $startDate = $submitted["datestart"];
         $endDate = $submitted["dateend"];
-        $data = array(); 
+        $data = array();
 
-        for($current = $startDate; $current != $endDate; $current = date('Y-m-d', strtotime("$current +1 day"))) {
+        for ($current = $startDate; $current != $endDate; $current = date('Y-m-d', strtotime("$current +1 day"))) {
             $day["date"] = $current;
             $day["dayofweek"] = date("l", strtotime($current));
             $day["isenabled"] = (date("N", strtotime($current)) <= 5) ? 1 : (($submitted["isweekends"]) ? 1 : 0);
@@ -116,14 +120,14 @@ class cbs {
         }
         return $data;
     }
-    
-    function showITScheduleEventDatesForm($submitted){
+
+    function showITScheduleEventDatesForm($submitted) {
         $list = $this->db->getITScheduleEventDateListByID($submitted["id"]);
         $this->tpl->assign('list', $list);
         $this->tpl->display('itschedule_editdatelist.tpl');
     }
-    
-    function processITScheduleEventDatesForm($formdata = array()){
+
+    function processITScheduleEventDatesForm($formdata = array()) {
         foreach ($formdata["maxlaptops"] as $key => $value) {
             $ids[] = $key;
         }
@@ -131,47 +135,74 @@ class cbs {
             $row["id"] = $id;
             if (array_key_exists($id, $formdata["isenabled"])) {
                 $row["isenabled"] = "1";
-            } else $row["isenabled"] = "0";
+            } else
+                $row["isenabled"] = "0";
             $row["maxlaptops"] = $formdata["maxlaptops"]["$id"];
             $row["maxdesktops"] = $formdata["maxdesktops"]["$id"];
             $data[] = $row;
         }
         $result = $this->db->updateITScheduleEventDates($data);
-        if ($result) echo "<br>Success updating event dates!"; else echo "<br>Error updating event dates!";
+        if ($result)
+            echo "<br>Success updating event dates!"; else
+            echo "<br>Error updating event dates!";
     }
 
-    function showITScheduleEventDatesApplicationForm($eventid){
+    function showITScheduleEventDatesApplicationForm($eventid, $username) {
+        $userapplications = $this->db->getITScheduleApplicationsByUsername($username);
+        foreach ($userapplications as $application) {
+            $event = $this->db->getITScheduleEventDateByID($application["eventdateid"]);
+            $data["eventdate"] = $event["eventdate"];
+            $data["eventdayofweek"] = date('l', strtotime($event["eventdate"]));
+            $data["computername"] = $application["hostname_man"];
+            $data["devicetype"] = $application["devicetype"];
+            $data["applicationid"] = $application["id"];
+            $applist[] = $data;
+        }
         $datelist = $this->db->getITScheduleEventDateListByID($eventid);
-        foreach ($datelist as $day){
+        foreach ($datelist as $day) {
             $data["eventdateid"] = $day["id"];
             $data["eventdate"] = $day["eventdate"];
             $data["eventdayofweek"] = date("l", strtotime($day["eventdate"]));
-            $data["isenabled"] = (bool)$day["isenabled"];
+            $data["isenabled"] = (bool) $day["isenabled"];
             $laptops = $this->db->getITScheduleEventDateBookingsByID($day["id"], "laptop");
             $desktops = $this->db->getITScheduleEventDateBookingsByID($day["id"], "desktop");
-            $data["islaptopbookable"] = ( $day["maxlaptops"] - (count($laptops)) > 0 ) ? TRUE:FALSE;
-            $data["isdesktopbookable"] = ( $day["maxdesktops"] - (count($desktops)) > 0 ) ? TRUE:FALSE;
+            $data["islaptopbookable"] = ( $day["maxlaptops"] - (count($laptops)) > 0 ) ? TRUE : FALSE;
+            $data["isdesktopbookable"] = ( $day["maxdesktops"] - (count($desktops)) > 0 ) ? TRUE : FALSE;
             $list[] = $data;
         }
+        $this->tpl->assign('applist', $applist);
         $this->tpl->assign('list', $list);
         $this->tpl->display('itschedule_showeventdates.tpl');
     }
-    
-    function showITScheduleUserDetailsForm($submitted = array()){
+
+    function showITScheduleUserDetailsForm($submitted = array()) {
         $data["devicetype"] = $submitted["devicetype"];
         $data["eventdateid"] = $submitted["eventdateid"];
         $this->tpl->assign('data', $data);
-        $this->tpl->display('itschedule_userdetails.tpl');        
+        $this->tpl->display('itschedule_userdetails.tpl');
     }
 
-    function processITScheduleApplicationForm($formdata = array()){
+    function processITScheduleApplicationForm($formdata = array()) {
         $data = $formdata;
         $data["username"] = $_SESSION["username"];
-        $data["hostname"] = "TEMP";
+        $data["hostname"] = gethostbyaddr($_SERVER["REMOTE_ADDR"]);
         $result = $this->db->addITScheduleApplication($data);
-        if ($result) echo "<h1>Booking Successful!"; else echo "<h1>ERROR in booking!";
+        if ($result)
+            echo "<h1>Booking Successful!"; else
+            echo "<h1>ERROR in booking!";
     }
-    
+
+    function processITScheduleApplicationDelete($formdata = array(), $username, $isitscheduleadmin) {
+        $result = TRUE;
+        foreach ($formdata["idstodelete"] as $id) {
+            $app = $this->db->getITScheduleApplicationsById($id);
+            if ($isitscheduleadmin || ($app["username"] == $username)) {
+                if (!$this->db->deleteITScheduleApplicationById($id)) $result = FALSE;
+            } else die("Unauthorised!");
+        }
+        if ($result) echo "<h1>Application DELETED Successfully!"; else echo "<h1>ERROR in application deletion!";
+    }
+
     function ni($func) {
         echo('Function ' . $func . ' is not yet implemented');
     }
