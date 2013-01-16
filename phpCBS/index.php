@@ -94,10 +94,13 @@ switch ($_action) {
         } else die("Unauthorised");  
         break;    
     case 'itschedule_showeventdates':
-        $cbs->ni('itschedule_showeventdates');
+        $cbs->showITScheduleEventDatesApplicationForm($_REQUEST["id"]);
         break;    
-    case 'itschedule_apply':
-        $cbs->ni('itschedule_apply');
+    case 'itschedule_showuserdetailsform':
+        $cbs->showITScheduleUserDetailsForm($_REQUEST);
+        break;    
+    case 'itschedule_application_submit':
+        $cbs->processITScheduleApplicationForm($_REQUEST);
         break;
 
     case 'view':
