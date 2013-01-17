@@ -188,8 +188,8 @@ class cbs {
         $data["hostname"] = gethostbyaddr($_SERVER["REMOTE_ADDR"]);
         $result = $this->db->addITScheduleApplication($data);
         if ($result)
-            echo "<h1>Booking Successful!"; else
-            echo "<h1>ERROR in booking!";
+            $this->showMessageRedirect("<h1>Application Successfull!", "?action=itschedule_showeventdates&id=1"); else
+            echo "<h1>ERROR in booking!</h1>";
     }
 
     function processITScheduleApplicationDelete($formdata = array(), $username, $isitscheduleadmin) {
@@ -200,9 +200,16 @@ class cbs {
                 if (!$this->db->deleteITScheduleApplicationById($id)) $result = FALSE;
             } else die("Unauthorised!");
         }
-        if ($result) echo "<h1>Application DELETED Successfully!"; else echo "<h1>ERROR in application deletion!";
+        if ($result) $this->showMessageRedirect("<h1>Application DELETED Successfully!", "?action=itschedule_showeventdates&id=1"); else echo "<h1>ERROR in application deletion!</h1>";
     }
-
+    
+    function showMessageRedirect($message, $url){
+        $this->tpl->assign('message', $message);
+        $this->tpl->assign('url', $url);
+        $this->tpl->assign('redirect', TRUE);
+        $this->tpl->display('itschedule_message.tpl');        
+    }
+            
     function ni($func) {
         echo('Function ' . $func . ' is not yet implemented');
     }

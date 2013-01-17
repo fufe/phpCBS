@@ -15,8 +15,8 @@
                     <tr>
                         <th>Date</th>
                         <th>Day of week</th>
-                        <th>Device type</th>
                         <th>Computer name</th>
+                        <th>Device type</th>
                         <th>Delete application</th>
                     </tr>                   
                     {foreach from=$applist item=i}
