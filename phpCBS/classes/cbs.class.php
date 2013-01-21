@@ -147,7 +147,7 @@ class cbs {
             echo "<br>Error updating event dates!";
     }
 
-    function showITScheduleEventDatesApplicationForm($eventid, $username) {
+    function showITScheduleEventDatesApplicationForm($eventid, $username, $isitscheduleadmin) {
         $userapplications = $this->db->getITScheduleApplicationsByUsername($username);
         foreach ($userapplications as $application) {
             $event = $this->db->getITScheduleEventDateByID($application["eventdateid"]);
@@ -170,6 +170,7 @@ class cbs {
             $data["isdesktopbookable"] = ( $day["maxdesktops"] - (count($desktops)) > 0 ) ? TRUE : FALSE;
             $list[] = $data;
         }
+        $this->tpl->assign('isadmin', $isitscheduleadmin);
         $this->tpl->assign('applist', $applist);
         $this->tpl->assign('list', $list);
         $this->tpl->display('itschedule_showeventdates.tpl');
@@ -195,7 +196,7 @@ class cbs {
     function processITScheduleApplicationDelete($formdata = array(), $username, $isitscheduleadmin) {
         $result = TRUE;
         foreach ($formdata["idstodelete"] as $id) {
-            $app = $this->db->getITScheduleApplicationsById($id);
+            $app = $this->db->getITScheduleApplicationById($id);
             if ($isitscheduleadmin || ($app["username"] == $username)) {
                 if (!$this->db->deleteITScheduleApplicationById($id)) $result = FALSE;
             } else die("Unauthorised!");
@@ -208,6 +209,17 @@ class cbs {
         $this->tpl->assign('url', $url);
         $this->tpl->assign('redirect', TRUE);
         $this->tpl->display('itschedule_message.tpl');        
+    }
+    
+    function showITScheduleApplicationsForEventDateId($eventdateid) {
+        $dateapplications = $this->db->getITScheduleApplicationsByEventDateId($eventdateid);
+        foreach ($dateapplications as $application) {
+            $event = $this->db->getITScheduleEventDateByID($application["eventdateid"]);
+            $application["eventdate"] = $event["eventdate"];
+            $applist[] = $application;
+        }        
+        $this->tpl->assign('applist', $applist);
+        $this->tpl->display('itschedule_listapplications.tpl');        
     }
             
     function ni($func) {

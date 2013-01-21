@@ -94,7 +94,7 @@ switch ($_action) {
         } else die("Unauthorised");  
         break;    
     case 'itschedule_showeventdates':
-        $cbs->showITScheduleEventDatesApplicationForm($_REQUEST["id"], $_SESSION["username"]);
+        $cbs->showITScheduleEventDatesApplicationForm($_REQUEST["id"], $_SESSION["username"], $_SESSION["isitscheduleadmin"]);
         break;    
     case 'itschedule_showuserdetailsform':
         $cbs->showITScheduleUserDetailsForm($_REQUEST);
@@ -104,6 +104,11 @@ switch ($_action) {
         break;
     case 'itschedule_deleteapplication':
         $cbs->processITScheduleApplicationDelete($_REQUEST, $_SESSION["username"], $_SESSION["isitscheduleadmin"]);
+        break;    
+    case 'itschedule_showapplications':
+        if ($_SESSION["isitscheduleadmin"]){
+            $cbs->showITScheduleApplicationsForEventDateId($_REQUEST["eventdateid"]);
+        } else die("Unauthorised");          
         break;    
 
     case 'view':

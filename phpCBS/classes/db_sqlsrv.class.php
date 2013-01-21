@@ -157,10 +157,19 @@ class db_sqlsrv {
         return $data;        
     }
     
-    function getITScheduleApplicationsById($id) {
+    function getITScheduleApplicationById($id) {
         $sth = $this->dbh->query("SELECT * FROM itschedule_applications WHERE id=$id");
         return $sth->fetch(PDO::FETCH_ASSOC);        
     }
+    
+    function getITScheduleApplicationsByEventDateId($eventdateid) {
+        $sth = $this->dbh->query("SELECT * FROM itschedule_applications WHERE eventdateid=$eventdateid");
+        $data = array();
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $row;
+        }
+        return $data;        
+    }    
     
     function deleteITScheduleApplicationById($id) {
         $sth = $this->dbh->prepare("DELETE FROM itschedule_applications WHERE id = $id");

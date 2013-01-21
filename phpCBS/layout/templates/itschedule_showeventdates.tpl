@@ -45,7 +45,7 @@
                 </tr>                   
                 {foreach from=$list item=i}
                     <tr>
-                        <td>{$i.eventdate}</td>
+                        <td>{if $isadmin}<a href="{$SCRIPT_NAME}?action=itschedule_showapplications&eventdateid={$i.eventdateid}">{$i.eventdate}</a>{else}{$i.eventdate}{/if}</td>
                         <td>{$i.eventdayofweek}</td>
                         {if $i.isenabled}
                             {if $i.islaptopbookable}<td bgcolor="lightgreen"><a href="{$SCRIPT_NAME}?action=itschedule_showuserdetailsform&eventdateid={$i.eventdateid}&devicetype=laptop" />Book laptop here.</td>{else}<td bgcolor="red">No laptop slot left.</td>{/if}
